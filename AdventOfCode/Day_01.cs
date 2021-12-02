@@ -14,12 +14,13 @@ public class Day_01 : BaseDay
     public Day_01()
     {
         _input = File.ReadAllText(InputFilePath);
+        int[] input = { };
+        input = Array.ConvertAll (File.ReadAllLines (InputFilePath), x => int.Parse (x));
+
 
         int Increment()
         {
-            int[] input = { };
             int increaseAmount = 0;
-            input = Array.ConvertAll (File.ReadAllLines (InputFilePath), x => int.Parse (x));
             for (int i = 0; i < input.Length - 1; i++)
             {
                 if (input[i] < input[i + 1])
@@ -27,11 +28,25 @@ public class Day_01 : BaseDay
             }
             return increaseAmount;
         }
+        // part 2
+        int IncreaseAmt()
+        {
+            int increaseAmount = 0;
+            for (int i = 0; i < input.Length - 3; i++)
+            {
+                if (input[i] + input[i + 1] + input[i + 2] < input[i + 1] + input[i + 2] + input[i + 3])
+                    increaseAmount++;
+            }
+
+            return increaseAmount;
+        }
         
-        Console.WriteLine(Increment());
+        
+        // Console.WriteLine(Increment());
+        Console.WriteLine(IncreaseAmt());
     }
 
-    public override ValueTask<string> Solve_1() => new("Solution 1 1616");
+    public override ValueTask<string> Solve_1() => new($"Solution to {ClassPrefix} {CalculateIndex()} | 1616");
 
-    public override ValueTask<string> Solve_2() => new($"Solution to {ClassPrefix} {CalculateIndex()}, part 2");
+    public override ValueTask<string> Solve_2() => new($"Solution to {ClassPrefix} {CalculateIndex()} | 1645");
 }
