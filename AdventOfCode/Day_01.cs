@@ -1,52 +1,45 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
-
-namespace AdventOfCode;
-
-public class Day_01 : BaseDay
+﻿public class Day_01 : BaseDay
 {
-    private readonly string _input;
+    private readonly int[] _input;
 
     public Day_01()
     {
-        _input = File.ReadAllText(InputFilePath);
-        int[] input = { };
-        input = Array.ConvertAll (File.ReadAllLines (InputFilePath), x => int.Parse (x));
-
-
-        int Increment()
-        {
-            int increaseAmount = 0;
-            for (int i = 0; i < input.Length - 1; i++)
-            {
-                if (input[i] < input[i + 1])
-                    increaseAmount++;
-            }
-            return increaseAmount;
-        }
-        // part 2
-        int IncreaseAmt()
-        {
-            int increaseAmount = 0;
-            for (int i = 0; i < input.Length - 3; i++)
-            {
-                if (input[i] + input[i + 1] + input[i + 2] < input[i + 1] + input[i + 2] + input[i + 3])
-                    increaseAmount++;
-            }
-
-            return increaseAmount;
-        }
-        
-        
-        // Console.WriteLine(Increment());
-        Console.WriteLine(IncreaseAmt());
+        _input = ParseInput();
     }
 
-    public override ValueTask<string> Solve_1() => new($"Solution to {ClassPrefix} {CalculateIndex()} | 1616");
+    public override ValueTask<string> Solve_1()
+    {
+        var result = 0;
 
-    public override ValueTask<string> Solve_2() => new($"Solution to {ClassPrefix} {CalculateIndex()} | 1645");
+        for (int i = 1; i < _input.Length; ++i)
+        {
+            if (_input[i] > _input[i - 1])
+            {
+                ++result;
+            }
+        }
+
+        return new(result.ToString());
+    }
+
+    public override ValueTask<string> Solve_2()
+    {
+        const int n = 3;
+        var result = 0;
+
+        for (int i = n; i < _input.Length; ++i)
+        {
+            if (_input[i] > _input[i - n])
+            {
+                ++result;
+            }
+        }
+
+        return new(result.ToString());
+    }
+
+    private int[] ParseInput()
+    {
+        return File.ReadAllLines(InputFilePath).Select(int.Parse).ToArray();
+    }
 }
